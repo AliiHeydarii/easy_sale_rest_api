@@ -5,11 +5,12 @@ from .models import Advertisement
 class AdListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Advertisement
-        fields = ['id' , 'title' , 'price' , 'description' , 'city']
+        fields = ['id' , 'title' , 'price' , 'description' , 'city' , 'category']
         
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         rep['city'] = instance.city.name
+        rep['category'] = instance.category.name
         return rep
         
 class AdDetailSerializer(serializers.ModelSerializer): 
