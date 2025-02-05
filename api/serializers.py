@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Advertisement
+from .models import Advertisement , CustomUser
 
 
 class AdListSerializer(serializers.ModelSerializer):
@@ -24,3 +24,14 @@ class AdDetailSerializer(serializers.ModelSerializer):
         rep['user'] = instance.user.email
         rep['city'] = instance.city.name
         return rep
+    
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser 
+        fields = ['id' , 'email' , 'username' , 'phone_number' , 'password']
+        
+    def create(self, validated_data):
+        user = CustomUser.objects.create_user(**validated_data)
+        return user
+         

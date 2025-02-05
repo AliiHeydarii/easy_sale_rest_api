@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Advertisement
-from .serializers import AdListSerializer , AdDetailSerializer
+from .serializers import AdListSerializer , AdDetailSerializer , CustomUserSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -44,3 +44,12 @@ class AdDetailApiView(APIView):
        ad = get_object_or_404(Advertisement,pk=pk)
        ad.delete()
        return Response(status=status.HTTP_204_NO_CONTENT)
+   
+   
+class UserCreateApiView(APIView):
+    def post(self,request):
+        serializer = CustomUserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data , status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
