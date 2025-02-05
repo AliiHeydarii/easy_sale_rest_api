@@ -1,11 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Advertisement
-from .serializers import AdListSerializer , AdDetailSerializer , CustomUserSerializer
+from .serializers import AdListSerializer , AdDetailSerializer , CustomUserSerializer , ProfileSerializer
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from .permissions import IsOwnerOrReadOnly
+from .models import Profile
 
 
 
@@ -53,4 +54,20 @@ class UserCreateApiView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data , status=status.HTTP_201_CREATED)
+        return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
+    
+    
+class ProfileApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        profile = Profile.objects.filter(user=request.user).first()
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+    
+    def put(self,request):
+        profile = Profile.objects.filter(user=request.user).first()
+        serializer = ProfileSerializer(profile , data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data)
         return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)

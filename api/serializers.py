@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Advertisement , CustomUser
+from .models import Advertisement , CustomUser , Profile
 
 
 class AdListSerializer(serializers.ModelSerializer):
@@ -35,3 +35,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
         user = CustomUser.objects.create_user(**validated_data)
         return user
          
+         
+         
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['id' , 'first_name' , 'last_name']
+        extra_kwargs = {'user': {'read_only': True}}
