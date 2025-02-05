@@ -79,7 +79,7 @@ class City(models.Model):
 
 class Advertisement(models.Model):
     # slug = models.SlugField()
-    image = models.ImageField(upload_to='ads')
+    # image = models.ImageField(upload_to='ads')
     title = models.CharField(max_length=250)
     price = models.DecimalField(max_digits=15 , decimal_places=3)
     description = models.TextField()
