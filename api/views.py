@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 from .permissions import IsOwnerOrReadOnly
 from .models import Profile
+from rest_framework import filters
 
 
 
