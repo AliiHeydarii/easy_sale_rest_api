@@ -5,6 +5,7 @@ from .serializers import AdListSerializer , AdDetailSerializer , CustomUserSeria
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from .permissions import IsOwnerOrReadOnly
 
 
 
@@ -25,7 +26,7 @@ class AdListApiView(APIView):
     
 
 class AdDetailApiView(APIView):
-    permission_classes=[IsAuthenticatedOrReadOnly]
+    permission_classes=[IsAuthenticatedOrReadOnly , IsOwnerOrReadOnly]
     
     def get(self,request,pk):
         ad = get_object_or_404(Advertisement,pk=pk)
